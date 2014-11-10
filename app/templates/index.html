@@ -5,5 +5,11 @@
 	<style type="text/css"></style>
 {% endblock %}
 {% block page_content %}
-<h1>Hello World!</h1>
+<p>Hello,
+{% if current_user.is_authenticated() %}
+	{{current_user.username}}
+{% else %}
+	Stranger
+{% endif %}!
+</p>
 {% endblock %}
