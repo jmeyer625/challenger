@@ -51,7 +51,7 @@ def resend_confirmation():
 @auth.route('/confirm/<token>')
 @login_required
 def confirm(token):
-	if current_user.confirmed():
+	if current_user.confirmed:
 		return redirect(url_for('main.index'))
 	if current_user.confirm(token):
 		flash('You have confirmed your account. Thanks!')
