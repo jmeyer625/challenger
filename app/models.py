@@ -39,7 +39,7 @@ class Role(db.Model):
 				role = Role(name=r)
 			role.permissions = roles[r][0]
 			role.default = roles[r][1]
-			db.sessions.add(role)
+			db.session.add(role)
 		db.session.commit()
 
 	users = db.relationship('User', backref='role', lazy='dynamic')
@@ -60,6 +60,14 @@ class User(UserMixin, db.Model):
 	@password.setter
 	def password(self, password):
 		self.password_hash = generate_password_hash(password)
+
+	def __init__(self):
+		super(User, self).__init__(**kwargs)
+		if self.role is None:
+			if self.email == current_app.config['CHALLENGER_ADMIN']:
+				self.role = Role.query.filter_by(permissions=0xff).first()
+			if self.role is None:
+				self.role = Role.query.filter_by(default=True).first()
 
 	def __repr__(self):
 		return '<User %r>' % self.username
