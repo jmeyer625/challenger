@@ -1,4 +1,4 @@
-#!/Users/jakemeyer/Documents/challenger/challenger/venv/bin/python2.7
+#!/Users/jakemeyer/Documents/challenger/venv/bin/python2.7
 # EASY-INSTALL-ENTRY-SCRIPT: 'alembic==0.6.7','console_scripts','alembic'
 __requires__ = 'alembic==0.6.7'
 import sys

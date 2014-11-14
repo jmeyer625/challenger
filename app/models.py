@@ -9,8 +9,6 @@ from flask import current_app
 def load_user(user_id):
 	return User.query.get(int(user_id))
 
-login_manager.anonymous_user = AnonymousUser
-
 class Permission:
 	FOLLOW = 0x01
 	COMMENT = 0x02
@@ -105,3 +103,5 @@ class AnonymousUser(AnonymousUserMixin):
 
 	def is_administrator(self):
 		return False
+
+login_manager.anonymous_user = AnonymousUser
