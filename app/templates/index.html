@@ -6,10 +6,6 @@
 {% endblock %}
 {% block page_content %}
 <p>Hello,
-{% if current_user.is_authenticated() %}
-	{{current_user.username}}
-{% else %}
-	Stranger
-{% endif %}!
+{% if current_user.is_authenticated() %}{{current_user.username}}{% else %}Stranger{% endif %}!
 </p>
 {% endblock %}
