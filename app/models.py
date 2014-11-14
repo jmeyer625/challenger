@@ -1,6 +1,6 @@
 from . import db
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask.ext.login import UserMixin
+from flask.ext.login import UserMixin, AnonymousUserMixin
 from . import login_manager
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
@@ -8,6 +8,8 @@ from flask import current_app
 @login_manager.user_loader
 def load_user(user_id):
 	return User.query.get(int(user_id))
+
+login_manager.anonymous_user = AnonymousUser
 
 class Permission:
 	FOLLOW = 0x01
@@ -90,3 +92,16 @@ class User(UserMixin, db.Model):
 		self.confirmed = True
 		db.session.add(self)
 		return True
+
+	def can(self, permissions):
+		return self.role is not None and (self.role.permissions & permissions) == permissions
+
+	def is_administrator(self):
+		return self.can(Permission.ADMINISTER)
+
+class AnonymousUser(AnonymousUserMixin):
+	def can(self, permissions):
+		return False
+
+	def is_administrator(self):
+		return False
