@@ -4,7 +4,7 @@ from . import auth
 from ..models import User
 from .forms import LoginForm, RegistrationForm
 from app import db
-from ..email import send_email
+from ..email import send_email, send_mandrill_email
 
 
 
@@ -44,7 +44,10 @@ def register():
 def resend_confirmation():
 	token = current_user.generate_confirmation_token()
 	user = current_user
-	send_email(current_user.email, 'Confirm Your Account', 'auth/email/confirm', user=current_user, token=token)
+	print('confirm route')
+	response = send_mandrill_email(template='auth/email/confirm', to=[user.email], subject='Confirm Your Account', user=user, token=token)
+	print(response)
+	#send_email(current_user.email, 'Confirm Your Account', 'auth/email/confirm', user=current_user, token=token)
 	flash('A new confirmation email has been sent to you.')
 	return redirect(url_for('main.index'))
 

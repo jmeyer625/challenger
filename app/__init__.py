@@ -5,7 +5,7 @@ from flask.ext.moment import Moment
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.login import LoginManager
 from config import config
-from mandrill import Mandrill
+from flask.ext.mandrill import Mandrill
 
 bootstrap = Bootstrap()
 mail = Mail()
@@ -26,8 +26,7 @@ def create_app(config_name):
 	moment.init_app(app)
 	db.init_app(app)
 	login_manager.init_app(app)
-	mandrill(app)
-
+	mandrill.init_app(app)
 	from main import main as main_blueprint
 	app.register_blueprint(main_blueprint)
 

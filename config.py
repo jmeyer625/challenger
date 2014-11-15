@@ -7,6 +7,8 @@ class Config:
 	CHALLENGER_MAIL_SUBJECT_PREFIX = '[Challenger]'
 	CHALLENGER_MAIL_SENDER = 'Challenger Admin <challengerapplication@gmail.com>'
 	CHALLENGER_ADMIN = os.environ.get('CHALLENGER_ADMIN')
+	MANDRILL_API_KEY = os.environ.get('MANDRILL_API_KEY')
+	MANDRILL_DEFAULT_FROM = os.environ.get('MANDRILL_DEFAULT_FROM')
 
 	@staticmethod
 	def init_app(app):
