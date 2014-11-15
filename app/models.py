@@ -61,7 +61,7 @@ class User(UserMixin, db.Model):
 	def password(self, password):
 		self.password_hash = generate_password_hash(password)
 
-	def __init__(self):
+	def __init__(self, **kwargs):
 		super(User, self).__init__(**kwargs)
 		if self.role is None:
 			if self.email == current_app.config['CHALLENGER_ADMIN']:
