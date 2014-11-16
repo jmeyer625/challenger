@@ -2,15 +2,20 @@ from datetime import datetime
 from flask import render_template, session, redirect, url_for, abort, flash
 from . import main
 from .. import db
-from ..models import User, Permission, Role
+from ..models import User, Permission, Role, Post
 from ..decorators import admin_required, permission_required
 from flask.ext.login import login_required, current_user
-from .forms import EditProfileForm, EditProfileAdminForm
+from .forms import EditProfileForm, EditProfileAdminForm, PostForm
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
-	return render_template('index.html', name = session.get('name'), known=session.get('known', False), \
-			current_time = datetime.utcnow())
+	form = PostForm()
+	if current_user.can(Permission.WRITE_ARTICLES) and form.validate_on_submit():
+		post = Post(body=form.body.data, author=current_user._get_current_object())
+		db.session.add(post)
+		return redirect(url_for('.index'))
+	posts = Post.query.order_by(Post.timestamp.desc()).all()
+	return render_template('index.html', form=form, posts=posts)
 
 @main.route('/admin')
 @login_required

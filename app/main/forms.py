@@ -32,3 +32,7 @@ class EditProfileAdminForm(Form):
 	def validate_username(self, field):
 		if field.data != self.user.username and User.query.filter_by(username=field.data).first():
 			raise ValidationError('Username already registered')
+
+class PostForm(Form):
+	body = TextAreaField('Blog post body', validators=[Required()])
+	submit = SubmitField('Submit')

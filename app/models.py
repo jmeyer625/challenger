@@ -59,6 +59,8 @@ class User(UserMixin, db.Model):
 	member_since = db.Column(db.DateTime(), default=datetime.utcnow)
 	last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
 
+	posts = db.relationship('Post', backref='author', lazy='dynamic')
+
 	@property
 	def password(self):
 		raise AttributeError('password is not a readable attribute')
@@ -115,3 +117,10 @@ class AnonymousUser(AnonymousUserMixin):
 		return False
 
 login_manager.anonymous_user = AnonymousUser
+
+class Post(db.Model):
+	__tablename__ = 'posts'
+	id = db.Column(db.Integer, primary_key=True)
+	body = db.Column(db.Text)
+	timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+	author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
